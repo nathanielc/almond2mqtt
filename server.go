@@ -165,9 +165,9 @@ func (s *Server) determineValueForKind(kind, data string) string {
 		}
 	case "DoorLock":
 		switch data {
-		case "lock", "close":
+		case "on", "lock":
 			return "255"
-		case "unlock", "open":
+		case "off", "unlock":
 			return "0"
 		}
 	}
