@@ -20,6 +20,12 @@
   revision = "f7328c680bc62b6f368d32f86093a3006605922e"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/nathanielc/smarthome"
+  packages = ["."]
+  revision = "3b856a115026204af4059d7b2bb6d48b24c2994d"
+
+[[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
@@ -34,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fa5c23625e967f8d7c4db94a3f5da8a06c689b52e74700a36ccc6517c2f12cf4"
+  inputs-digest = "c1e44c654d2e89b1a06341500d418f43f9958706881f7d6743150e2d00433f7c"
   solver-name = "gps-cdcl"
   solver-version = 1
