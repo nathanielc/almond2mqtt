@@ -13,6 +13,8 @@ const (
 	commandPath = "command"
 	statusPath  = "status"
 	connectPath = "connect"
+
+	statusPathComplete = "/" + statusPath + "/"
 )
 
 type Value struct {
@@ -59,4 +61,10 @@ func DefaultMQTTClientOptions() *mqtt.ClientOptions {
 	return mqtt.NewClientOptions().
 		SetKeepAlive(5 * time.Second).
 		SetAutoReconnect(true)
+}
+
+type StatusMessage struct {
+	Toplevel string
+	Item     string
+	Value    Value
 }

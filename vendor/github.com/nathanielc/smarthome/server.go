@@ -42,6 +42,11 @@ type Server interface {
 	PublishStatus(item string, value Value) error
 	// Publish a one-shot message.
 	PublishOneShotStatus(item string, value Value) error
+
+	// Client returns a client that shares the underlying MQTT connection.
+	// The server must be connected before calling.
+	// Closing the client is required but will not disconnect the underlying MQTT connection.
+	Client() (Client, error)
 }
 
 type server struct {
@@ -51,6 +56,7 @@ type server struct {
 	setTopic,
 	setTopicAnchored,
 	getTopic,
+	getTopicAnchored,
 	commandTopic,
 	statusTopic string
 
@@ -64,14 +70,19 @@ func NewServer(toplevel string, h Handler, opts *mqtt.ClientOptions) Server {
 	ct := path.Join(toplevel, connectPath)
 	// Setup Will
 	opts.SetWill(ct, "0", 0, false)
+
 	st := path.Join(toplevel, setPath)
 	sta := st + "/"
+	gt := path.Join(toplevel, getPath)
+	gta := gt + "/"
+
 	return &server{
 		toplevel:         toplevel,
 		connectTopic:     ct,
 		setTopic:         st,
 		setTopicAnchored: sta,
-		getTopic:         path.Join(toplevel, getPath),
+		getTopic:         gt,
+		getTopicAnchored: gta,
 		commandTopic:     path.Join(toplevel, commandPath),
 		statusTopic:      path.Join(toplevel, statusPath),
 		h:                h,
@@ -87,13 +98,13 @@ func (s *server) Connect() error {
 
 	// Subscribe to Set, Get and Command topics
 
-	if token := s.c.Subscribe(s.setTopic, 0, s.handleSet); token.Wait() && token.Error() != nil {
+	if token := s.c.Subscribe(path.Join(s.setTopic, "#"), 0, s.handleSet); token.Wait() && token.Error() != nil {
 		return token.Error()
 	}
-	if token := s.c.Subscribe(s.getTopic, 0, s.handleGet); token.Wait() && token.Error() != nil {
+	if token := s.c.Subscribe(path.Join(s.getTopic, "#"), 0, s.handleGet); token.Wait() && token.Error() != nil {
 		return token.Error()
 	}
-	if token := s.c.Subscribe(s.commandTopic, 0, s.handleCommand); token.Wait() && token.Error() != nil {
+	if token := s.c.Subscribe(path.Join(s.commandTopic, "#"), 0, s.handleCommand); token.Wait() && token.Error() != nil {
 		return token.Error()
 	}
 	return nil
@@ -106,7 +117,7 @@ func (s *server) handleSet(c mqtt.Client, m mqtt.Message) {
 }
 
 func (s *server) handleGet(c mqtt.Client, m mqtt.Message) {
-	item := strings.TrimPrefix(m.Topic(), s.setTopicAnchored)
+	item := strings.TrimPrefix(m.Topic(), s.getTopicAnchored)
 	v, ok := s.h.Get(s.toplevel, item)
 	if ok {
 		s.publishStatus(item, v, true)
@@ -154,4 +165,8 @@ func (s *server) publishStatus(item string, value Value, oneshot bool) error {
 	token := s.c.Publish(path.Join(s.statusTopic, item), 0, !oneshot, payload)
 	token.Wait()
 	return token.Error()
+}
+
+func (s *server) Client() (Client, error) {
+	return newClient(s.c, false)
 }

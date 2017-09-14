@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/eclipse/paho.mqtt.golang"
   packages = [".","packets"]
-  revision = "45f9b18f4864c81d49c3ed01e5faec9eeb05de31"
-  version = "v1.0.0"
+  revision = "aff15770515e3c57fc6109da73d42b0d46f7f483"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/gorilla/websocket"
@@ -23,7 +23,7 @@
   branch = "master"
   name = "github.com/nathanielc/smarthome"
   packages = ["."]
-  revision = "3b856a115026204af4059d7b2bb6d48b24c2994d"
+  revision = "4fa73de7637dc000d6a86c80ddd96e1e56aa0b11"
 
 [[projects]]
   name = "github.com/pkg/errors"
@@ -34,8 +34,8 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["websocket"]
-  revision = "1f9224279e98554b6a6432d4dd998a739f8b2b7c"
+  packages = ["proxy","websocket"]
+  revision = "859d1a86bb617c0c20d154590c3c5d3fcb670b07"
 
 [solve-meta]
   analyzer-name = "dep"
