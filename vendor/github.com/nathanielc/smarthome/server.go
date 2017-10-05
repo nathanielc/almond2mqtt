@@ -67,7 +67,7 @@ type server struct {
 }
 
 func NewServer(toplevel string, h Handler, opts *mqtt.ClientOptions) Server {
-	ct := path.Join(toplevel, connectPath)
+	ct := path.Join(toplevel, connectedPath)
 	// Setup Will
 	opts.SetWill(ct, "0", 0, false)
 

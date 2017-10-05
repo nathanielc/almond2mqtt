@@ -10,9 +10,6 @@ import (
 	"github.com/eclipse/paho.mqtt.golang"
 )
 
-// Allow 150ms for existing work to be completed when disconnecting.
-const disconnectQuiesce = 150
-
 type Client interface {
 	// Set publishes a set message with the value
 	Set(toplevel, item string, value string) error
@@ -203,7 +200,7 @@ func (c *client) Close() {
 	close(c.closing)
 	c.wg.Wait()
 	if c.disconnect {
-		c.c.Disconnect(disconnectQuiesce)
+		c.c.Disconnect(defaultDisconnectQuiesce)
 	}
 }
 
