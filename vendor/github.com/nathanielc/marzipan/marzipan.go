@@ -276,6 +276,30 @@ func (r genericResponse) Response() (Response, error) {
 			return nil, err
 		}
 		return udi, nil
+	case "DynamicClientAdded":
+		dca := &DynamicClientAdded{
+			Meta: r.Meta(),
+		}
+		if err := r.unmarshal("Clients", &dca.Clients); err != nil {
+			return nil, err
+		}
+		return dca, nil
+	case "DynamicClientJoined":
+		dcj := &DynamicClientJoined{
+			Meta: r.Meta(),
+		}
+		if err := r.unmarshal("Clients", &dcj.Clients); err != nil {
+			return nil, err
+		}
+		return dcj, nil
+	case "DynamicClientLeft":
+		dcl := &DynamicClientLeft{
+			Meta: r.Meta(),
+		}
+		if err := r.unmarshal("Clients", &dcl.Clients); err != nil {
+			return nil, err
+		}
+		return dcl, nil
 	default:
 		return nil, fmt.Errorf("unsupported command type: %q", commandType)
 	}

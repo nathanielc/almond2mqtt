@@ -17,7 +17,7 @@
   branch = "master"
   name = "github.com/nathanielc/marzipan"
   packages = ["."]
-  revision = "f7328c680bc62b6f368d32f86093a3006605922e"
+  revision = "68b2789fcb7f24ed6c0a70dedefb4bc81f5da244"
 
 [[projects]]
   branch = "master"

@@ -54,6 +54,31 @@ func NewDeviceListRequest() Request {
 	}
 }
 
+type DynamicClientAdded struct {
+	Meta
+	Clients map[string]ClientSpec `json:"Clients"`
+}
+type DynamicClientLeft struct {
+	Meta
+	Clients map[string]ClientSpec `json:"Clients"`
+}
+type DynamicClientJoined struct {
+	Meta
+	Clients map[string]ClientSpec `json:"Clients"`
+}
+
+type ClientSpec struct {
+	ID            string `json:"ID"`
+	Name          string `json:"Name"`
+	Connection    string `json:"Connection"`
+	MAC           string `json:"MAC"`
+	Type          string `json:"Type"`
+	LastKnownIP   string `json:"LastKnownIP"`
+	Active        bool   `json:"Active"`
+	UseAsPresence bool   `json:"UseAsPresence"`
+	// TODO add all fields here
+}
+
 type DynamicIndexUpdated struct {
 	Meta
 	Devices map[string]Device `json:"Devices"`
