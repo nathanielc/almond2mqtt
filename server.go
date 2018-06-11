@@ -166,7 +166,7 @@ func (s *Server) Command(toplevel string, cmd []byte) {}
 
 func (s *Server) almondValueForType(dtype, data string) string {
 	switch dtype {
-	case "SmartACSwitch":
+	case "BinarySwitch", "SmartACSwitch":
 		switch data {
 		case "on":
 			return "true"
@@ -193,7 +193,7 @@ func (s *Server) almondValueForType(dtype, data string) string {
 
 func (s *Server) mqttValueForType(dtype, data string) string {
 	switch dtype {
-	case "SmartACSwitch":
+	case "BinarySwitch", "SmartACSwitch":
 		switch data {
 		case "true":
 			return "on"
