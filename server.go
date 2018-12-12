@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/eclipse/paho.mqtt.golang"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/nathanielc/marzipan"
 	"github.com/nathanielc/smarthome"
 )
@@ -56,6 +56,8 @@ func (s *Server) Run() error {
 	if err := s.home.Connect(); err != nil {
 		return err
 	}
+
+	s.home.PublishHWStatus(smarthome.Disconnected)
 
 	// Subscribe to all Almond events
 	sub, err := s.almondC.Subscribe("")
@@ -166,7 +168,7 @@ func (s *Server) Command(toplevel string, cmd []byte) {}
 
 func (s *Server) almondValueForType(dtype, data string) string {
 	switch dtype {
-	case "BinarySwitch", "SmartACSwitch":
+	case "BinaryPowerSwitch", "BinarySwitch", "SmartACSwitch":
 		switch data {
 		case "on":
 			return "true"
@@ -193,7 +195,7 @@ func (s *Server) almondValueForType(dtype, data string) string {
 
 func (s *Server) mqttValueForType(dtype, data string) string {
 	switch dtype {
-	case "BinarySwitch", "SmartACSwitch":
+	case "BinaryPowerSwitch", "BinarySwitch", "SmartACSwitch":
 		switch data {
 		case "true":
 			return "on"
